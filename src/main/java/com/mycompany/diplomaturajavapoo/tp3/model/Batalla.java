@@ -1,32 +1,40 @@
-
 package com.mycompany.diplomaturajavapoo.tp3;
 
-public class Batalla {
-    private Pokemon p1;
-    private Pokemon p2;
-    
-    public Batalla(Pokemon p1, Pokemon p2) {
-        this.p1 = p1;
-        this.p2 = p2;
+class Batalla {
+
+    private Entrenador entrenador1;
+    private Entrenador entrenador2;
+
+    public Batalla(Entrenador entrenador1, Entrenador entrenador2) {
+        this.entrenador1 = entrenador1;
+        this.entrenador2 = entrenador2;
     }
-    
+
     public void iniciarBatalla() {
-        System.out.println("¡Comienza la batalla entre " + p1.nombre + " y " + p2.nombre + "!");
+        Pokemon p1 = entrenador1.obtenerPrimerPokemon();
+        Pokemon p2 = entrenador2.obtenerPrimerPokemon();
 
-        while (p1.puntosDeVida > 0 && p2.puntosDeVida > 0) {
-            p1.atacar(p2);
-            if (p2.puntosDeVida <= 0) {
-                System.out.println(p2.nombre + " ha sido derrotado!");
-                break; 
-            }
-
-            p2.atacar(p1);
-            if (p1.puntosDeVida <= 0) {
-                System.out.println(p1.nombre + " ha sido derrotado!");
-                break; 
-            }
+        if (p1 == null || p2 == null) {
+            System.out.println("No hay suficientes Pokémon para la batalla!");
+            return;
         }
 
-        System.out.println("¡La batalla ha terminado!");
+        System.out.println("¡Comienza la batalla entre " + p1.nombre + " de " + entrenador1.getNombre() + " y " + p2.nombre + " de " + entrenador2.getNombre() + "!");
+
+        while (p1.estaVivo() && p2.estaVivo()) {
+            p1.atacar(p2);
+            if (!p2.estaVivo()) {
+                break;
+            }
+            p2.atacar(p1);
+        }
+
+        if (p1.estaVivo()) {
+            System.out.println(p2.getNombre() + " ha sido derrotado!");
+            System.out.println(entrenador1.getNombre() + " gana la batalla!");
+        } else {
+            System.out.println(p1.getNombre() + " ha sido derrotado!");
+            System.out.println(entrenador2.getNombre() + " gana la batalla!");
+        }
     }
 }
